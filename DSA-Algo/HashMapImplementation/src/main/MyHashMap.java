@@ -88,32 +88,18 @@ public class MyHashMap<K,V>
 	   }
 	   int hash = key.hashCode();
 	   int index = Math.abs(hash) % DEFAULT_CAPACITY;
-	   Entry<K, V> current = table[index];
-	   if (current == null) {
-		    return; // nothing to remove
-	   }
-	   if(current.key.equals(key))
+	   Entry<K, V> prev = table[index];
+	   Entry<K, V> current = prev.next;
+	   while(current!=null)
 	   {
-		   table[index] = current.next;
-		   current = null;
+		   if(current.key.equals(key))
+		   {
+			   prev.next = current.next;
+			   return;
+		   }
+		   prev = current;
+		   current = current.next;
 	   }
-	   else
-	   {
-		   while(current.next!=null && current.next.next!=null)
-		   {
-			   if(current.next.key.equals(key))
-			   {
-				   current.next = current.next.next;
-				   return;
-			   }
-			   current = current.next;
-		   }
-		   if(current.next != null && current.next.key.equals(key))
-		   {
-			   current.next = null;
-		   }
-   
-	   }   
    }
    
    
