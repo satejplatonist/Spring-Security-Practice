@@ -30,7 +30,7 @@ public class MyHashMap<K,V>
 		   throw new RuntimeException("Key cannot be null");
 	   }
 	   int hash = key.hashCode();
-	   int index = hash % DEFAULT_CAPACITY;
+	   int index = Math.abs(hash) % DEFAULT_CAPACITY;
 	   
 	   Entry<K, V> entry = new Entry<K, V>(key, value);
 	   
@@ -53,4 +53,68 @@ public class MyHashMap<K,V>
 		   current.next = entry;
 	   }
    }
+   
+   public V get(K key)
+   {
+	   if(key==null)
+	   {
+		   throw new RuntimeException("Key cannot be null");
+	   }
+	   int hash = key.hashCode();
+	   int index = Math.abs(hash) % DEFAULT_CAPACITY;
+	   
+	   if(table[index].key == key)
+	   {
+		   return table[index].value;
+	   }
+	   else
+	   {
+		   Entry<K, V> current = table[index];
+		   while(current!=null && !current.key.equals(key))
+		   {
+			   current = current.next;
+		   }
+		   if(current.key.equals(key))
+		     return current.value;
+		   return null;
+	   }
+   }
+   
+   public void remove(K key)
+   {
+	   if(key==null)
+	   {
+		   throw new RuntimeException("Key cannot be null");
+	   }
+	   int hash = key.hashCode();
+	   int index = Math.abs(hash) % DEFAULT_CAPACITY;
+	   Entry<K, V> current = table[index];
+	   if (current == null) {
+		    return; // nothing to remove
+	   }
+	   if(current.key.equals(key))
+	   {
+		   table[index] = current.next;
+		   current = null;
+	   }
+	   else
+	   {
+		   while(current.next!=null && current.next.next!=null)
+		   {
+			   if(current.next.key.equals(key))
+			   {
+				   current.next = current.next.next;
+				   return;
+			   }
+			   current = current.next;
+		   }
+		   if(current.next != null && current.next.key.equals(key))
+		   {
+			   current.next = null;
+		   }
+   
+	   }   
+   }
+   
+   
 }
