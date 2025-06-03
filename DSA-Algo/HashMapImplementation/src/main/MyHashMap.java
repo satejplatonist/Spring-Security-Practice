@@ -102,5 +102,73 @@ public class MyHashMap<K,V>
 	   }
    }
    
+   public boolean containsKey(K key)
+   {
+	   if(key==null)
+	   {
+		   throw new RuntimeException("Key cannot be null");
+	   }
+	   int hash = key.hashCode();
+	   int index = Math.abs(hash) % DEFAULT_CAPACITY;
+	   Entry<K, V> current = table[index];
+	   while(current!=null)
+	   {
+		   if(current.key.equals(key))
+		   {
+			   return true;
+		   }
+		   current = current.next;
+	   }
+	   return false;
+   }
    
+   public int size()
+   {
+	   int count = 0;
+	   for (int i = 0; i < table.length; i++) 
+	   {
+		  int sum = 0;
+		  Entry<K, V> current = table[i];
+		  while(current!=null)
+		  {
+			  sum+=1;
+			  current = current.next;
+		  }
+		  count+=sum;
+	   }
+	   return count;
+   }
+   
+   public boolean isEmpty()
+   {
+	   if(table.length==0) {
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public void clear()
+   {
+	   for (int i = 0; i < table.length; i++) {
+	        table[i] = null;
+	   }
+   }
+   
+   public boolean containsValue(V value)
+   {
+	   for (int i = 0; i < table.length; i++) 
+	   {
+		  Entry<K, V> current = table[i];
+		  while(current!=null)
+		  {
+			  if(value==null && current.value==null) {return true;}
+			  if(current.value.equals(value))
+			  {
+				  return true;
+			  }
+			  current = current.next;
+		  }
+	   }
+	   return false;
+   }
 }
