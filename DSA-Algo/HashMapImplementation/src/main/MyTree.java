@@ -171,4 +171,51 @@ public class MyTree
 	  return false;
   }
   
+  public void clear()
+  {
+	  root = null;
+  }
+  
+  public int min()
+  {
+	  int[] array = minmax();
+	  if(array==null) {throw new RuntimeException("root is null");}
+	  return array[0];
+  }
+  
+  public int max()
+  {
+	  int[] array = minmax();
+	  if(array==null) {throw new RuntimeException("root is null");}
+	  return array[1];
+  }
+  
+  public int[] minmax()
+  {
+	  int min = Integer.MAX_VALUE;
+	  int max = Integer.MIN_VALUE;
+	  Queue<Node> queue = new LinkedList<Node>();
+	  if(root==null)
+	  {
+		  return null;
+	  }
+	  queue.add(root);
+	  while(!queue.isEmpty())
+	  {
+		  var current = queue.poll();
+		  
+		  if(current.value>max) {max = current.value;}
+		  if(current.value<min) {min = current.value;}
+		  
+		  for(Node c: current.children)
+		  {		  
+			  queue.add(c);
+		  }
+	  }
+	  int[] array = new int[2];
+	  array[0] = min;
+	  array[1] = max;
+	  return array;
+  }
+  
 }
