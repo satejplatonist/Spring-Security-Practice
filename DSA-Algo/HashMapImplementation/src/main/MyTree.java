@@ -176,6 +176,52 @@ public class MyTree
 	  root = null;
   }
   
+  public int height() {
+      if (root == null) {
+        throw new RuntimeException("root is null");
+      }
+      return heightRec(root);
+  }
+
+
+  private int heightRec(Node node) {
+      if (node.children.isEmpty()) {
+         return 1;
+      }
+      int maxChildHeight = 0;
+      for (Node c : node.children) {
+        int childH = heightRec(c);
+        if (childH > maxChildHeight) {
+            maxChildHeight = childH;
+        }
+      }
+      return maxChildHeight + 1;
+  }
+  
+  public void leafOrderTraversal()
+  {
+	  if (root == null) {return;}
+	  Queue<Node> queue = new LinkedList<Node>();
+	  if(root.children.size()==0)
+	  {
+		  System.out.println(root.value);
+		  return;
+	  }
+	  queue.add(root);
+	  while(!queue.isEmpty())
+	  {
+		  var current = queue.poll();
+		  if(current.children.size()==0)
+		  {
+			  System.out.println(current.value);
+		  }
+		  for (Node c : current.children) {
+			 queue.add(c);
+		  }
+	  }
+  }
+
+  
   public int min()
   {
 	  int[] array = minmax();
