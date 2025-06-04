@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -17,7 +18,7 @@ public class MyTree
 	  public Node(int value) {
 		 super();
 		 this.value = value;
-		 this.children = null;
+		 this.children = new ArrayList<Node>();
 	  }
   }
   
@@ -73,5 +74,101 @@ public class MyTree
 	  }
   }
   
+  public void add(Node parent, int number)
+  {
+     if (root == null) {
+	     root = new Node(number);
+	     return;
+	 }
+	 if(parent == null) {return;}  
+	 if(!isPresent(parent)) {throw new RuntimeException("No such node present");}
+	 Node newNode = new Node(number);
+	 parent.children.add(newNode);
+  }
+  
+  public void remove(Node node)
+  {
+	  if(node == null || root == null) {
+          return;
+      }
+	  if(root.equals(node))
+	  {
+		  root = null;
+		  return;
+	  }
+	  Node parent = findParent(node);
+	  if(parent==null)
+	  {
+		  throw new RuntimeException("Node not found in tree");
+	  }
+	  parent.children.remove(node);
+  }
+  
+  public void remove(int number)
+  {
+	  Node node = findNodeByValue(number);
+	  if(node==null) {throw new RuntimeException("Node not found in tree");}
+	  remove(node);
+  }
+  
+  public Node findNodeByValue(int number)
+  {
+	  Queue<Node> queue = new LinkedList<Node>();
+	  if(root == null) {throw new RuntimeException("root is null no element in tree"); }
+	  queue.add(root);
+	  while (!queue.isEmpty()) {
+		 var current = queue.poll();
+		 if (current.value == number) {
+             return current;
+         }
+		 for (Node c : current.children) {
+			 if(c.value==number)
+			 {
+				 return c;
+			 }
+			 queue.add(c);
+		 }
+	  }
+	  return null;
+  }
+  
+  private Node findParent(Node node)
+  {
+	  if(node == null) {throw new RuntimeException("No such node present");}
+	  Queue<Node> queue = new LinkedList<Node>();
+	  if(root == null) {throw new RuntimeException("root is null no element in tree"); }
+	  queue.add(root);
+	  while(!queue.isEmpty())
+	  {
+		  var current = queue.poll();
+		  for (Node c : current.children) {
+			 if(c.equals(node))
+			 {
+				 return current;
+			 }
+			 queue.add(c);
+		  }
+	  }
+	  return null;
+  }
+  
+  public boolean isPresent(Node node)
+  {
+	  if (root == null || node == null) return false;
+	  Queue<Node> queue = new LinkedList<Node>();
+	  queue.add(root);
+	  while(!queue.isEmpty())
+	  {
+		  var current = queue.poll();
+		  if(current.equals(node))
+		  {
+			  return true;
+		  }
+		  for (Node c : current.children) {
+			  queue.add(c);
+		  }
+	  }
+	  return false;
+  }
   
 }
