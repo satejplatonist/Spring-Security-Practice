@@ -10,7 +10,7 @@ public class MyTree
 {
   private Node root;
   
-  private static class Node
+  public static class Node
   {
 	  private int value;
 	  private List<Node> children;
@@ -20,6 +20,11 @@ public class MyTree
 		 this.value = value;
 		 this.children = new ArrayList<Node>();
 	  }
+
+	  public int getValue() {
+		return value;
+	  }
+	  
   }
   
   public void bfs()
@@ -221,7 +226,6 @@ public class MyTree
 	  }
   }
 
-  
   public int min()
   {
 	  int[] array = minmax();
